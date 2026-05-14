@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", serif;
+
+  --color-brand-primary: #f2ca50;
+  --color-brand-on-primary: #3c2f00;
+  --color-surface-base: #0D1117;
+  --color-surface-panel: rgba(26, 26, 27, 0.6);
+  --color-on-surface: #e5e2e3;
+  --color-on-surface-variant: #d0c5af;
+  --color-outline-dim: rgba(153, 144, 124, 0.2);
+
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@layer base {
+  body {
+    @apply bg-surface-base text-on-surface selection:bg-brand-primary selection:text-brand-on-primary font-sans antialiased overflow-x-hidden;
+    cursor: default;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Mobile-specific polish */
+@media (hover: none) and (pointer: coarse) {
+  .perspective-card {
+    transform: none;
+  }
+  .perspective-card:hover {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* CSS-only grain noise — no external image request */
+  .grain-overlay {
+    @apply pointer-events-none fixed inset-0 z-50 opacity-[0.025];
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px 128px;
+  }
+
+  .light-bloom {
+    @apply absolute w-[600px] sm:w-[800px] h-[600px] sm:h-[800px] rounded-full blur-[100px] -z-10 pointer-events-none;
+    background: radial-gradient(circle, rgba(242, 202, 80, 0.05) 0%, rgba(242, 202, 80, 0) 70%);
+  }
+
+  .glass-panel {
+    @apply bg-surface-panel border border-outline-dim shadow-2xl;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(242, 202, 80, 0.3);
+  }
+
+  .perspective-card {
+    transition: box-shadow 0.4s ease;
+  }
+
+  .perspective-card:hover {
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+  }
+
+  .perspective-3d {
+    perspective: 1200px;
+  }
+}
+
